@@ -259,31 +259,33 @@
 }
 
 .candle {
-  width: 20px;
-  height: 80px;
-  background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 100%);
-  border-radius: 10px;
+  width: 50px;
+  height: 140px;
+  background: linear-gradient(180deg, #fffacd 0%, #f0e68c 50%, #daa520 100%);
+  border-radius: 15px;
   cursor: pointer;
   position: relative;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(218, 165, 32, 0.4), inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+  border: 2px solid #f0e68c;
 }
 
 .candle:hover:not(.blown) {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: 0 12px 35px rgba(218, 165, 32, 0.6), inset -2px -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .candle-flame {
   position: absolute;
-  top: -25px;
+  top: -40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 16px;
-  height: 24px;
-  background: radial-gradient(circle at 40% 35%, #fff7c7 0%, #ffb347 35%, #ff7a00 70%);
+  width: 28px;
+  height: 45px;
+  background: radial-gradient(circle at 40% 35%, #fff7c7 0%, #ffb347 30%, #ff7a00 60%, #ff4500 100%);
   border-radius: 50% 50% 50% 50%;
-  filter: blur(0.5px);
-  box-shadow: 0 0 15px rgba(255, 170, 60, 0.6);
+  filter: blur(1px);
+  box-shadow: 0 0 25px rgba(255, 170, 60, 0.8), 0 0 40px rgba(255, 100, 0, 0.5);
   animation: flame-flicker 0.6s ease-in-out infinite;
 }
 
