@@ -43,39 +43,40 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  /* Ethereal Romance Color Palette */
+  --primary: #C9A961; /* Rose Gold */
+  --primary-foreground: #FFFBF0; /* Ivory */
+  --sidebar-primary: #E8D5C4; /* Champagne Gold */
+  --sidebar-primary-foreground: #FFFBF0;
+  --chart-1: #F5E6E0; /* Soft Blush */
+  --chart-2: #E8D5C4;
+  --chart-3: #C9A961;
+  --chart-4: #B76E79; /* Rose */
+  --chart-5: #D4A5A5; /* Dusty Mauve */
+  --radius: 1.2rem; /* Softer, more rounded */
+  --background: #FFFBF0; /* Ivory */
+  --foreground: #3d2f14; /* Deep Brown */
+  --card: #FFF9F5; /* Warm Cream */
+  --card-foreground: #3d2f14;
+  --popover: #FFF9F5;
+  --popover-foreground: #3d2f14;
+  --secondary: #F5E6E0; /* Soft Blush */
+  --secondary-foreground: #3d2f14;
+  --muted: #E8D5C4; /* Champagne */
+  --muted-foreground: #8b7355;
+  --accent: #C9A961; /* Rose Gold */
+  --accent-foreground: #FFFBF0;
+  --destructive: #B76E79; /* Rose */
+  --destructive-foreground: #FFFBF0;
+  --border: #E8D5C4;
+  --input: #FFF9F5;
+  --ring: #C9A961;
+  --sidebar: #FFFBF0;
+  --sidebar-foreground: #3d2f14;
+  --sidebar-accent: #C9A961;
+  --sidebar-accent-foreground: #FFFBF0;
+  --sidebar-border: #E8D5C4;
+  --sidebar-ring: #C9A961;
 }
 
 .dark {
@@ -119,6 +120,13 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Lora', serif;
+    letter-spacing: 0.3px;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
