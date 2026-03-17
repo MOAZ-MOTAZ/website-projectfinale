@@ -99,12 +99,6 @@ export default function Home() {
           <h2 className="cake-title">Make a wish and blow the candles ✨</h2>
           
           <div className="cake-container">
-            <img 
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663148350671/XWJVkUigXWKbAJZqtn4imp/cake-illustration-PusQkCc87UXXsoZLkXxnct.webp"
-              alt="Birthday Cake"
-              className="cake-image"
-            />
-            
             <div className="candles-wrapper">
               {[0, 1, 2].map((index) => (
                 <div
