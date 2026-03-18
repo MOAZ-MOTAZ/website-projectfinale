@@ -1,176 +1,232 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import '../styles/home.css';
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import "../styles/home-v2.css";
 
-/**
- * Birthday Gift Website - Ethereal Romance Design
- * 
- * Design Philosophy:
- * - Soft, warm color palette (blush pink, champagne gold, ivory)
- * - Delicate animations that feel organic and magical
- * - Elegant serif typography (Playfair Display + Lora)
- * - Generous whitespace and breathing room
- * - Floating hearts and sparkles as ambient decoration
- */
+// Sample photo data - replace with actual photos
+const PHOTOS = [
+  { id: 1, title: "Memory 1", description: "A special moment" },
+  { id: 2, title: "Memory 2", description: "Happy times together" },
+  { id: 3, title: "Memory 3", description: "Unforgettable memories" },
+  { id: 4, title: "Memory 4", description: "Precious moments" },
+  { id: 5, title: "Memory 5", description: "Beautiful memories" },
+  { id: 6, title: "Memory 6", description: "Cherished times" },
+];
 
-export default function Home() {
-  const [currentSection, setCurrentSection] = useState<'welcome' | 'cake' | 'letter'>('welcome');
-  const [candlesBlown, setCandlesBlown] = useState(0);
-  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+const MESSAGES = [
+  "You light up every room! 🌟",
+  "Your smile is contagious! 😊",
+  "You're one of a kind! ✨",
+  "You deserve all the happiness! 💕",
+  "You make the world better! 🌍",
+];
 
-  // Create floating hearts and sparkles
+function Confetti() {
   useEffect(() => {
-    const createFloatingElements = () => {
-      const container = document.getElementById('floating-elements');
-      if (!container) return;
+    const canvas = document.getElementById("confetti-canvas") as HTMLCanvasElement;
+    if (!canvas) return;
 
-      for (let i = 0; i < 15; i++) {
-        const element = document.createElement('div');
-        element.className = 'floating-heart';
-        element.innerHTML = '💗';
-        element.style.left = Math.random() * 100 + '%';
-        element.style.top = Math.random() * 100 + '%';
-        element.style.animationDelay = Math.random() * 5 + 's';
-        element.style.animationDuration = (Math.random() * 8 + 12) + 's';
-        container.appendChild(element);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles: any[] = [];
+    const colors = ["#6B2C3E", "#D4AF37", "#E8B4C8", "#B76E79", "#C9A961"];
+
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: -10,
+        vx: (Math.random() - 0.5) * 8,
+        vy: Math.random() * 5 + 3,
+        size: Math.random() * 6 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.1,
+      });
+    }
+
+    let animationId: number;
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p, index) => {
+        p.y += p.vy;
+        p.x += p.vx;
+        p.vy += 0.1; // gravity
+        p.rotation += p.rotationSpeed;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+
+        if (p.y > canvas.height) {
+          particles.splice(index, 1);
+        }
+      });
+
+      if (particles.length > 0) {
+        animationId = requestAnimationFrame(animate);
       }
     };
 
-    createFloatingElements();
+    animate();
+
+    return () => cancelAnimationFrame(animationId);
   }, []);
 
-  const handleCandleClick = (index: number) => {
-    const candle = document.getElementById(`candle-${index}`);
-    if (candle) {
-      candle.classList.add('blown');
-      setCandlesBlown(prev => {
-        const newCount = prev + 1;
-        if (newCount === 3) {
-          // Trigger confetti burst
-          createConfetti();
-          setTimeout(() => {
-            setCurrentSection('letter');
-          }, 1200);
-        }
-        return newCount;
-      });
+  return <canvas id="confetti-canvas" className="confetti-canvas" />;
+}
+
+export default function Home() {
+  const [currentSection, setCurrentSection] = useState<"welcome" | "gallery" | "surprise" | "letter">("welcome");
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [unlockedMessages, setUnlockedMessages] = useState<number[]>([]);
+  const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
+
+  const handleOpenGift = () => {
+    setCurrentSection("gallery");
+  };
+
+  const handlePhotoClick = (photoId: number) => {
+    setSelectedPhoto(photoId);
+  };
+
+  const handleUnlockMessage = (index: number) => {
+    if (!unlockedMessages.includes(index)) {
+      setUnlockedMessages([...unlockedMessages, index]);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 2000);
     }
   };
 
-  const createConfetti = () => {
-    const container = document.getElementById('confetti-container');
-    if (!container) return;
+  const handleSurprise = () => {
+    setCurrentSection("surprise");
+  };
 
-    for (let i = 0; i < 80; i++) {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti-piece';
-      confetti.style.left = Math.random() * 100 + '%';
-      confetti.style.backgroundColor = ['#F5E6E0', '#E8D5C4', '#C9A961', '#B76E79', '#D4A5A5'][Math.floor(Math.random() * 5)];
-      confetti.style.animationDelay = Math.random() * 0.3 + 's';
-      container.appendChild(confetti);
-
-      setTimeout(() => confetti.remove(), 3000);
-    }
+  const handleFinalMessage = () => {
+    setCurrentSection("letter");
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
   };
 
   return (
-    <div className="birthday-container">
-      <div id="floating-elements" className="floating-elements"></div>
-      <div id="confetti-container" className="confetti-container"></div>
+    <div className="min-h-screen bg-background text-foreground">
+      {showConfetti && <Confetti />}
 
       {/* Welcome Section */}
-      <section className={`section welcome-section ${currentSection === 'welcome' ? 'active' : ''}`}>
-        <div className="hero-background"></div>
-        <div className="welcome-content">
-          <h1 className="welcome-title">Happy Birthday 🌸</h1>
-          <p className="welcome-subtitle">I made something special for you...</p>
-          <Button
-            onClick={() => setCurrentSection('cake')}
-            className="welcome-button"
-          >
-            Open Gift
-          </Button>
-        </div>
-      </section>
+      {currentSection === "welcome" && (
+        <section className="welcome-section">
+          <div className="welcome-content">
+            <h1 className="welcome-title">Happy Birthday, Mariam! 🎉</h1>
+            <p className="welcome-subtitle">I made something special for you...</p>
+            <Button
+              onClick={handleOpenGift}
+              className="welcome-button"
+              size="lg"
+            >
+              Open Gift ✨
+            </Button>
+          </div>
+        </section>
+      )}
 
-      {/* Cake Section */}
-      <section className={`section cake-section ${currentSection === 'cake' ? 'active' : ''}`}>
-        <div className="cake-content">
-          <h2 className="cake-title">Make a wish and blow the candles ✨</h2>
-          
-          <div className="cake-container">
-            <div className="candles-wrapper">
-              {[0, 1, 2].map((index) => (
+      {/* Gallery Section */}
+      {currentSection === "gallery" && (
+        <section className="gallery-section">
+          <div className="gallery-container">
+            <h2 className="gallery-title">Your Memories</h2>
+            <div className="gallery-grid">
+              {PHOTOS.map((photo) => (
                 <div
-                  key={index}
-                  id={`candle-${index}`}
-                  className="candle"
-                  onClick={() => handleCandleClick(index)}
+                  key={photo.id}
+                  className="gallery-item"
+                  onClick={() => handlePhotoClick(photo.id)}
                 >
-                  <div className="candle-flame"></div>
+                  <div className="photo-frame">
+                    <div className="photo-placeholder">
+                      <span className="photo-number">{photo.id}</span>
+                    </div>
+                  </div>
+                  <p className="photo-title">{photo.title}</p>
                 </div>
               ))}
             </div>
+            <Button
+              onClick={handleSurprise}
+              className="next-button"
+              size="lg"
+            >
+              Continue 💌
+            </Button>
           </div>
+        </section>
+      )}
 
-          <p className="cake-hint">Click each candle to blow them out</p>
-        </div>
-      </section>
+      {/* Surprise Section */}
+      {currentSection === "surprise" && (
+        <section className="surprise-section">
+          <div className="surprise-container">
+            <h2 className="surprise-title">Special Messages For You</h2>
+            <div className="messages-grid">
+              {MESSAGES.map((message, index) => (
+                <div
+                  key={index}
+                  className={`message-card ${unlockedMessages.includes(index) ? "unlocked" : ""}`}
+                  onClick={() => handleUnlockMessage(index)}
+                >
+                  {unlockedMessages.includes(index) ? (
+                    <p className="message-text">{message}</p>
+                  ) : (
+                    <p className="message-locked">Click to unlock 🎁</p>
+                  )}
+                </div>
+              ))}
+            </div>
+            <Button
+              onClick={handleFinalMessage}
+              className="final-button"
+              size="lg"
+            >
+              Read My Letter 💌
+            </Button>
+          </div>
+        </section>
+      )}
 
       {/* Letter Section */}
-      <section className={`section letter-section ${currentSection === 'letter' ? 'active' : ''}`}>
-        <div className="letter-wrapper">
-          <div className="letter-box">
-            <h2 className="letter-title">💌 A Letter For You</h2>
-
-            {/* Music Player */}
-            <div className="music-section">
-              <button
-                className="music-button"
-                onClick={() => setShowMusicPlayer(!showMusicPlayer)}
-              >
-                🎧 I picked a song for you
-              </button>
-
-              {showMusicPlayer && (
-                <div className="music-player">
-                  <iframe
-                    style={{ borderRadius: '12px' }}
-                    src="https://open.spotify.com/embed/track/3Fzlg5r1IjhLk2qRw667od?utm_source=generator"
-                    width="100%"
-                    height="152"
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"
-                  ></iframe>
-                </div>
-              )}
+      {currentSection === "letter" && (
+        <section className="letter-section">
+          <div className="letter-card">
+            <div className="letter-header">
+              <h2 className="letter-title">A Letter For You</h2>
             </div>
-
-            {/* Letter Meta */}
-            <div className="letter-meta">
-              <span>October 20, 1:00 AM — the night we started talking</span>
-            </div>
-
-            {/* Letter Body */}
-            <div className="letter-body">
-              <p>
-                This is where your heartfelt message will go... Write something meaningful and personal here. Share your favorite memories, inside jokes, or what makes this person special to you.
+            <div className="letter-content">
+              <p className="letter-date">March 18, 2026</p>
+              <p className="letter-text">
+                Dear Mariam,
               </p>
-
-              <div className="signature">
-                <p>Happy Birthday,</p>
-                <p className="signature-name">Mariam</p>
-              </div>
-
-              <p className="closing">
-                I'm really glad I got to know you.
+              <p className="letter-text">
+                On your special day, I want you to know how much you mean to me. You bring joy, laughter, and light into my life. Your kindness, strength, and beautiful spirit inspire me every single day.
+              </p>
+              <p className="letter-text">
+                Thank you for being the amazing person you are. I'm so grateful for all the memories we've shared and excited for all the adventures still to come.
+              </p>
+              <p className="letter-text">
+                Wishing you a day as wonderful as you are. You deserve all the happiness in the world.
+              </p>
+              <p className="letter-signature">
+                With all my love,<br />
+                <span className="signature-name">Your Friend</span>
               </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

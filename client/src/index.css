@@ -43,40 +43,40 @@
 }
 
 :root {
-  /* Ethereal Romance Color Palette */
-  --primary: #C9A961; /* Rose Gold */
-  --primary-foreground: #FFFBF0; /* Ivory */
-  --sidebar-primary: #E8D5C4; /* Champagne Gold */
-  --sidebar-primary-foreground: #FFFBF0;
-  --chart-1: #F5E6E0; /* Soft Blush */
-  --chart-2: #E8D5C4;
-  --chart-3: #C9A961;
-  --chart-4: #B76E79; /* Rose */
-  --chart-5: #D4A5A5; /* Dusty Mauve */
-  --radius: 1.2rem; /* Softer, more rounded */
-  --background: #FFFBF0; /* Ivory */
-  --foreground: #3d2f14; /* Deep Brown */
-  --card: #FFF9F5; /* Warm Cream */
-  --card-foreground: #3d2f14;
-  --popover: #FFF9F5;
-  --popover-foreground: #3d2f14;
-  --secondary: #F5E6E0; /* Soft Blush */
-  --secondary-foreground: #3d2f14;
-  --muted: #E8D5C4; /* Champagne */
-  --muted-foreground: #8b7355;
-  --accent: #C9A961; /* Rose Gold */
-  --accent-foreground: #FFFBF0;
-  --destructive: #B76E79; /* Rose */
-  --destructive-foreground: #FFFBF0;
-  --border: #E8D5C4;
-  --input: #FFF9F5;
-  --ring: #C9A961;
-  --sidebar: #FFFBF0;
-  --sidebar-foreground: #3d2f14;
-  --sidebar-accent: #C9A961;
-  --sidebar-accent-foreground: #FFFBF0;
-  --sidebar-border: #E8D5C4;
-  --sidebar-ring: #C9A961;
+  /* Luxe Playfulness - Burgundy & Gold Palette */
+  --primary: #6B2C3E; /* Deep Burgundy */
+  --primary-foreground: #F5F1E8; /* Cream */
+  --sidebar-primary: #8B3A4E; /* Rich Burgundy */
+  --sidebar-primary-foreground: #F5F1E8;
+  --chart-1: #D4AF37; /* Warm Gold */
+  --chart-2: #C9A961; /* Muted Gold */
+  --chart-3: #B76E79; /* Rose Gold */
+  --chart-4: #E8B4C8; /* Blush Rose */
+  --chart-5: #5C1F2E; /* Dark Burgundy */
+  --radius: 1rem;
+  --background: #F5F1E8; /* Cream Background */
+  --foreground: #2C1F1F; /* Deep Brown */
+  --card: #FFFFFF; /* White Cards */
+  --card-foreground: #2C1F1F;
+  --popover: #FFFFFF;
+  --popover-foreground: #2C1F1F;
+  --secondary: #E8B4C8; /* Blush Rose */
+  --secondary-foreground: #2C1F1F;
+  --muted: #D4AF37; /* Gold Accents */
+  --muted-foreground: #6B2C3E;
+  --accent: #B76E79; /* Rose Gold */
+  --accent-foreground: #FFFFFF;
+  --destructive: #C41E3A; /* Deep Red */
+  --destructive-foreground: #FFFFFF;
+  --border: #D4AF37;
+  --input: #F5F1E8;
+  --ring: #B76E79;
+  --sidebar: #F5F1E8;
+  --sidebar-foreground: #2C1F1F;
+  --sidebar-accent: #D4AF37;
+  --sidebar-accent-foreground: #6B2C3E;
+  --sidebar-border: #D4AF37;
+  --sidebar-ring: #B76E79;
 }
 
 .dark {
