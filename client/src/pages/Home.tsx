@@ -206,7 +206,7 @@ export default function Home() {
               <h2 className="letter-title">A Letter For You</h2>
             </div>
             <div className="letter-content">
-              <p className="letter-date">March 18, 2026</p>
+              <p className="letter-date">April 29, 2026</p>
               <p className="letter-text">
                 Dear Mariam,
               </p>
@@ -219,10 +219,7 @@ export default function Home() {
               <p className="letter-text">
                 Wishing you a day as wonderful as you are. You deserve all the happiness in the world.
               </p>
-              <p className="letter-signature">
-                With all my love,<br />
-                <span className="signature-name">Your Friend</span>
-              </p>
+
             </div>
           </div>
         </section>
