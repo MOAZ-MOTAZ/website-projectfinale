@@ -83,13 +83,13 @@ function Confetti() {
 }
 
 export default function Home() {
-  const [currentSection, setCurrentSection] = useState<"welcome" | "gallery" | "surprise" | "letter">("welcome");
+  const [currentSection, setCurrentSection] = useState<"welcome" | "surprise" | "letter">("welcome");
   const [showConfetti, setShowConfetti] = useState(false);
   const [unlockedMessages, setUnlockedMessages] = useState<number[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
   const handleOpenGift = () => {
-    setCurrentSection("gallery");
+    setCurrentSection("surprise");
   };
 
   const handlePhotoClick = (photoId: number) => {
@@ -135,37 +135,7 @@ export default function Home() {
         </section>
       )}
 
-      {/* Gallery Section */}
-      {currentSection === "gallery" && (
-        <section className="gallery-section">
-          <div className="gallery-container">
-            <h2 className="gallery-title">Your Memories</h2>
-            <div className="gallery-grid">
-              {PHOTOS.map((photo) => (
-                <div
-                  key={photo.id}
-                  className="gallery-item"
-                  onClick={() => handlePhotoClick(photo.id)}
-                >
-                  <div className="photo-frame">
-                    <div className="photo-placeholder">
-                      <span className="photo-number">{photo.id}</span>
-                    </div>
-                  </div>
-                  <p className="photo-title">{photo.title}</p>
-                </div>
-              ))}
-            </div>
-            <Button
-              onClick={handleSurprise}
-              className="next-button"
-              size="lg"
-            >
-              Continue 💌
-            </Button>
-          </div>
-        </section>
-      )}
+
 
       {/* Surprise Section */}
       {currentSection === "surprise" && (
