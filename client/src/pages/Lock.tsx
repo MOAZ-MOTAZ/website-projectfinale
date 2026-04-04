@@ -40,7 +40,7 @@ export default function Lock() {
 
       if (difference <= 0) {
         // Unlock the website
-        setLocation("/");
+        setLocation("/home");
         return;
       }
 

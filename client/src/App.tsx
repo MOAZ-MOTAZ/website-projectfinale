@@ -11,8 +11,8 @@ import Lock from "./pages/Lock";
 function Router() {
   return (
     <Switch>
-      <Route path={"/lock"} component={Lock} />
-      <Route path={"/"} component={Home} />
+      <Route path={"/"} component={Lock} />
+      <Route path={"/home"} component={Home} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
