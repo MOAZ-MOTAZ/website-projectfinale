@@ -1,0 +1,166 @@
+.lock-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6B2C3E 0%, #8B4A5F 50%, #6B2C3E 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background elements */
+.lock-container::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: float 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+.lock-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+  animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lock-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.lock-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.lock-subtitle {
+  font-family: "Lora", serif;
+  font-size: 1.2rem;
+  color: #E8B4C8;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2.5rem 0;
+  flex-wrap: wrap;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  min-width: 80px;
+}
+
+.countdown-number {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #D4AF37;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.countdown-label {
+  font-family: "Lora", serif;
+  font-size: 0.9rem;
+  color: #E8B4C8;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.countdown-separator {
+  font-size: 2rem;
+  color: #D4AF37;
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.lock-message {
+  font-family: "Lora", serif;
+  font-size: 1rem;
+  color: #E8B4C8;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .lock-title {
+    font-size: 2rem;
+  }
+
+  .lock-subtitle {
+    font-size: 1rem;
+  }
+
+  .countdown-item {
+    min-width: 70px;
+    padding: 0.75rem 1rem;
+  }
+
+  .countdown-number {
+    font-size: 2rem;
+  }
+
+  .countdown-separator {
+    font-size: 1.5rem;
+    margin: 0 0.25rem;
+  }
+
+  .lock-icon {
+    font-size: 3rem;
+  }
+}
