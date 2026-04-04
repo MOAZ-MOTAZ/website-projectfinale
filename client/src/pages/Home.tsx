@@ -18,6 +18,7 @@ const MESSAGES = [
   "You're one of a kind! ✨",
   "You deserve all the happiness! 💕",
   "You make the world better! 🌍",
+  "You mean a lot to me! 💖",
 ];
 
 function Confetti() {
