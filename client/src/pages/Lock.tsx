@@ -2,6 +2,23 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import "../styles/lock.css";
 
+const createConfetti = () => {
+  const confettiCount = 50;
+  const colors = ["#D4AF37", "#E8B4C8", "#6B2C3E", "#8B4A5F", "#FFD700"];
+  
+  for (let i = 0; i < confettiCount; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti-piece";
+    confetti.style.left = Math.random() * 100 + "%";
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 0.5 + "s";
+    document.body.appendChild(confetti);
+    
+    // Remove confetti after animation
+    setTimeout(() => confetti.remove(), 3000);
+  }
+};
+
 export default function Lock() {
   const [, setLocation] = useLocation();
   const [timeRemaining, setTimeRemaining] = useState<{
@@ -10,6 +27,7 @@ export default function Lock() {
     minutes: number;
     seconds: number;
   } | null>(null);
+  const [isUnlocking, setIsUnlocking] = useState(false);
   const [unlockTime] = useState(() => {
     // Generate a random unlock time between 11 PM April 28 and 1:30 AM April 29
     // Excluding 12 AM and 11:59 PM
@@ -39,8 +57,16 @@ export default function Lock() {
       const difference = unlockTime.getTime() - now.getTime();
 
       if (difference <= 0) {
-        // Unlock the website
-        setLocation("/home");
+        // Trigger unlock animation
+        setIsUnlocking(true);
+        
+        // Create confetti effect
+        createConfetti();
+        
+        // Redirect after animation
+        setTimeout(() => {
+          setLocation("/home");
+        }, 1500);
         return;
       }
 
@@ -56,9 +82,9 @@ export default function Lock() {
   }, [unlockTime, setLocation]);
 
   return (
-    <div className="lock-container">
-      <div className="lock-content">
-        <div className="lock-icon">🔒</div>
+    <div className={`lock-container ${isUnlocking ? "unlocking" : ""}`}>
+      <div className={`lock-content ${isUnlocking ? "fade-out" : ""}`}>
+        <div className={`lock-icon ${isUnlocking ? "unlock-animation" : ""}`}>🔒</div>
         <h1 className="lock-title">Something Special is Coming</h1>
         <p className="lock-subtitle">This project unlocks soon...</p>
         

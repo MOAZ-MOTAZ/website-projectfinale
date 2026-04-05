@@ -66,6 +66,73 @@
   }
 }
 
+/* Unlock animation */
+.lock-icon.unlock-animation {
+  animation: unlockPulse 0.6s ease-out;
+}
+
+@keyframes unlockPulse {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+  }
+  100% {
+    transform: scale(0.8) rotate(-5deg);
+  }
+}
+
+.lock-content.fade-out {
+  animation: fadeOutScale 1s ease-out forwards;
+}
+
+@keyframes fadeOutScale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.lock-container.unlocking {
+  animation: unlockingGlow 1s ease-out;
+}
+
+@keyframes unlockingGlow {
+  0% {
+    background: linear-gradient(135deg, #6B2C3E 0%, #8B4A5F 50%, #6B2C3E 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, #8B4A5F 0%, #D4AF37 50%, #8B4A5F 100%);
+  }
+  100% {
+    background: linear-gradient(135deg, #6B2C3E 0%, #8B4A5F 50%, #6B2C3E 100%);
+  }
+}
+
+/* Confetti styles */
+.confetti-piece {
+  position: fixed;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall 2.5s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
 .lock-title {
   font-family: "Cormorant Garamond", serif;
   font-size: 3rem;
@@ -134,6 +201,21 @@
   color: #E8B4C8;
   margin-top: 2rem;
   font-style: italic;
+}
+
+/* Responsive design for unlock animations */
+@media (max-width: 768px) {
+  @keyframes unlockPulse {
+    0% {
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      transform: scale(1.15) rotate(5deg);
+    }
+    100% {
+      transform: scale(0.85) rotate(-5deg);
+    }
+  }
 }
 
 /* Responsive design */

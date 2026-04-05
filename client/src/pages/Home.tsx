@@ -179,10 +179,10 @@ export default function Home() {
             <div className="letter-content">
               <p className="letter-date">April 29, 2026</p>
               <p className="letter-text">
-                Dear Mariam,
+                Dear Friend,
               </p>
               <p className="letter-text">
-                On your special day, I want you to know how much you mean to me. You bring joy, laughter, and light into my life. Your kindness, strength, and beautiful spirit inspire me every single day.
+                I want you to know how much you mean to me. You bring joy, laughter, and light into my life. Your kindness, strength, and beautiful spirit inspire me every single day.
               </p>
               <p className="letter-text">
                 Thank you for being the amazing person you are. I'm so grateful for all the memories we've shared and excited for all the adventures still to come.
