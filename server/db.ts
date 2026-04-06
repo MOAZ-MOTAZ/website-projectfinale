@@ -119,3 +119,18 @@ export async function listComments() {
     return [];
   }
 }
+
+export async function deleteComment(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete comment: database not available");
+    return;
+  }
+
+  try {
+    await db.delete(comments).where(eq(comments.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to delete comment:", error);
+    throw error;
+  }
+}
