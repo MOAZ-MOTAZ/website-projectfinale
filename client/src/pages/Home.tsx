@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { trpc } from "@/lib/trpc";
 import "../styles/home-v2.css";
 
 // Sample photo data - replace with actual photos
@@ -84,10 +85,23 @@ function Confetti() {
 }
 
 export default function Home() {
-  const [currentSection, setCurrentSection] = useState<"welcome" | "surprise" | "letter">("welcome");
+  const [currentSection, setCurrentSection] = useState<"welcome" | "surprise" | "letter" | "comments">("welcome");
   const [showConfetti, setShowConfetti] = useState(false);
   const [unlockedMessages, setUnlockedMessages] = useState<number[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
+  const [commentText, setCommentText] = useState("");
+  const [commentName, setCommentName] = useState("");
+
+  // Fetch comments
+  const { data: comments = [], isLoading: commentsLoading } = trpc.comments.list.useQuery();
+  const addCommentMutation = trpc.comments.add.useMutation({
+    onSuccess: () => {
+      setCommentText("");
+      setCommentName("");
+      // Invalidate and refetch comments
+      trpc.useUtils().comments.list.invalidate();
+    },
+  });
 
   const handleOpenGift = () => {
     setCurrentSection("surprise");
@@ -115,6 +129,19 @@ export default function Home() {
     setTimeout(() => setShowConfetti(false), 3000);
   };
 
+  const handleAddComment = async () => {
+    if (!commentText.trim() || !commentName.trim()) return;
+    
+    await addCommentMutation.mutateAsync({
+      name: commentName,
+      message: commentText,
+    });
+  };
+
+  const handleViewComments = () => {
+    setCurrentSection("comments");
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {showConfetti && <Confetti />}
@@ -135,8 +162,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-
 
       {/* Surprise Section */}
       {currentSection === "surprise" && (
@@ -190,7 +215,105 @@ export default function Home() {
               <p className="letter-text">
                 Wishing you a day as wonderful as you are. You deserve all the happiness in the world.
               </p>
+            </div>
+            <Button
+              onClick={handleViewComments}
+              className="final-button"
+              size="lg"
+              style={{ marginTop: "2rem" }}
+            >
+              Leave a Thank You Message 💝
+            </Button>
+          </div>
+        </section>
+      )}
 
+      {/* Comments Section */}
+      {currentSection === "comments" && (
+        <section className="letter-section">
+          <div className="letter-card">
+            <div className="letter-header">
+              <h2 className="letter-title">Leave a Message</h2>
+            </div>
+            <div className="letter-content" style={{ maxWidth: "600px", margin: "0 auto" }}>
+              <div style={{ marginBottom: "1.5rem" }}>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  value={commentName}
+                  onChange={(e) => setCommentName(e.target.value)}
+                  placeholder="Enter your name"
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem",
+                    border: "1px solid #D4AF37",
+                    borderRadius: "0.5rem",
+                    fontFamily: "inherit",
+                    fontSize: "1rem",
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: "1.5rem" }}>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+                  Your Message
+                </label>
+                <textarea
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Write your thank you message here..."
+                  rows={5}
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem",
+                    border: "1px solid #D4AF37",
+                    borderRadius: "0.5rem",
+                    fontFamily: "inherit",
+                    fontSize: "1rem",
+                    resize: "vertical",
+                  }}
+                />
+              </div>
+              <Button
+                onClick={handleAddComment}
+                disabled={addCommentMutation.isPending}
+                className="final-button"
+                size="lg"
+              >
+                {addCommentMutation.isPending ? "Sending..." : "Send Message 💌"}
+              </Button>
+
+              {/* Display comments */}
+              <div style={{ marginTop: "2rem", borderTop: "1px solid #D4AF37", paddingTop: "2rem" }}>
+                <h3 style={{ marginBottom: "1rem", fontSize: "1.25rem", fontWeight: "600" }}>
+                  Messages ({comments.length})
+                </h3>
+                {commentsLoading ? (
+                  <p>Loading messages...</p>
+                ) : comments.length === 0 ? (
+                  <p style={{ color: "#999" }}>No messages yet. Be the first to leave one!</p>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    {comments.map((comment: any) => (
+                      <div
+                        key={comment.id}
+                        style={{
+                          padding: "1rem",
+                          backgroundColor: "#F5F0E8",
+                          borderRadius: "0.5rem",
+                          borderLeft: "3px solid #D4AF37",
+                        }}
+                      >
+                        <p style={{ fontWeight: "600", marginBottom: "0.5rem" }}>
+                          {comment.name}
+                        </p>
+                        <p style={{ margin: 0, color: "#333" }}>{comment.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
