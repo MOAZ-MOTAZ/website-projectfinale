@@ -7,12 +7,14 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Lock from "./pages/Lock";
 import AdminDashboard from "./pages/AdminDashboard";
+import Teaser from "./pages/Teaser";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/"} component={Lock} />
+      <Route path={"/"} component={Teaser} />
+      <Route path={"/lock"} component={Lock} />
       <Route path={"/home"} component={Home} />
       <Route path={"/admin"} component={AdminDashboard} />
       <Route path={"/404"} component={NotFound} />
