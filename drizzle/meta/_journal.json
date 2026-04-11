@@ -8,6 +8,13 @@
       "when": 1775505113002,
       "tag": "0000_military_cannonball",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1775913703484,
+      "tag": "0001_cute_vulcan",
+      "breakpoints": true
     }
   ]
 }

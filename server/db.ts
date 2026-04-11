@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, comments, InsertComment } from "../drizzle/schema";
+import { InsertUser, users, comments, InsertComment, visitors, InsertVisitor } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -132,5 +132,41 @@ export async function deleteComment(id: number): Promise<void> {
   } catch (error) {
     console.error("[Database] Failed to delete comment:", error);
     throw error;
+  }
+}
+
+export async function trackVisitor(visitor: InsertVisitor): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot track visitor: database not available");
+    return;
+  }
+
+  try {
+    await db.insert(visitors).values(visitor);
+  } catch (error) {
+    console.error("[Database] Failed to track visitor:", error);
+    throw error;
+  }
+}
+
+export async function getRecentVisitors(eventType: string, limit: number = 10) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get visitors: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db
+      .select()
+      .from(visitors)
+      .where(eq(visitors.eventType, eventType))
+      .orderBy(desc(visitors.timestamp))
+      .limit(limit);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get visitors:", error);
+    return [];
   }
 }

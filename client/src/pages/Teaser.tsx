@@ -1,8 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { trpc } from "@/lib/trpc";
 import "../styles/teaser.css";
 
 export default function Teaser() {
   const [showDetails, setShowDetails] = useState(false);
+  const [countdown, setCountdown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  const trackVisit = trpc.visitors.trackTeaserVisit.useMutation();
+
+  useEffect(() => {
+    // Track teaser visit
+    trackVisit.mutate();
+  }, []);
+
+  useEffect(() => {
+    const calculateCountdown = () => {
+      // Calculate time until April 29, 2026 at 11:59 PM (or use the actual unlock time)
+      const targetDate = new Date('2026-04-29T23:59:59').getTime();
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        setCountdown({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
+    };
+
+    calculateCountdown();
+    const timer = setInterval(calculateCountdown, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="teaser-container">
@@ -46,6 +83,31 @@ export default function Teaser() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className="countdown-container">
+          <p className="countdown-label">The Big Reveal In:</p>
+          <div className="countdown-timer">
+            <div className="countdown-item">
+              <span className="countdown-value">{countdown.days}</span>
+              <span className="countdown-label-small">Days</span>
+            </div>
+            <span className="countdown-separator">:</span>
+            <div className="countdown-item">
+              <span className="countdown-value">{countdown.hours.toString().padStart(2, '0')}</span>
+              <span className="countdown-label-small">Hours</span>
+            </div>
+            <span className="countdown-separator">:</span>
+            <div className="countdown-item">
+              <span className="countdown-value">{countdown.minutes.toString().padStart(2, '0')}</span>
+              <span className="countdown-label-small">Minutes</span>
+            </div>
+            <span className="countdown-separator">:</span>
+            <div className="countdown-item">
+              <span className="countdown-value">{countdown.seconds.toString().padStart(2, '0')}</span>
+              <span className="countdown-label-small">Seconds</span>
+            </div>
+          </div>
         </div>
 
         <div className="teaser-cta">

@@ -35,3 +35,15 @@ export const comments = mysqlTable("comments", {
 
 export type Comment = typeof comments.$inferSelect;
 export type InsertComment = typeof comments.$inferInsert;
+
+// Visitor tracking for notifications
+export const visitors = mysqlTable("visitors", {
+  id: int("id").autoincrement().primaryKey(),
+  eventType: varchar("eventType", { length: 50 }).notNull(), // 'teaser_visit' or 'gift_unlock'
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  ipAddress: varchar("ipAddress", { length: 45 }),
+  userAgent: text("userAgent"),
+});
+
+export type Visitor = typeof visitors.$inferSelect;
+export type InsertVisitor = typeof visitors.$inferInsert;

@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
-import { addComment, listComments, deleteComment } from "./db";
+import { addComment, listComments, deleteComment, trackVisitor } from "./db";
 import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
@@ -31,10 +31,16 @@ export const appRouter = router({
           message: z.string().min(1, "Message is required"),
         })
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
         await addComment({
           name: input.name,
           message: input.message,
+        });
+        // Track gift unlock event
+        await trackVisitor({
+          eventType: "gift_unlock",
+          ipAddress: (ctx.req.ip || ctx.req.headers["x-forwarded-for"])?.toString(),
+          userAgent: ctx.req.headers["user-agent"]?.toString(),
         });
         return { success: true };
       }),
@@ -47,6 +53,17 @@ export const appRouter = router({
         await deleteComment(input.id);
         return { success: true };
       }),
+  }),
+
+  visitors: router({
+    trackTeaserVisit: publicProcedure.mutation(async ({ ctx }) => {
+      await trackVisitor({
+        eventType: "teaser_visit",
+        ipAddress: (ctx.req.ip || ctx.req.headers["x-forwarded-for"])?.toString(),
+        userAgent: ctx.req.headers["user-agent"]?.toString(),
+      });
+      return { success: true };
+    }),
   }),
 });
 
