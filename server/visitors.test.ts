@@ -26,6 +26,42 @@ function createPublicContext(ipAddress?: string, userAgent?: string): TrpcContex
   return ctx;
 }
 
+describe("visitors.trackGiftUnlock", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("tracks gift unlock and sends email notification", async () => {
+    const ctx = createPublicContext("192.168.1.100", "Mozilla/5.0 Test Browser");
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.visitors.trackGiftUnlock();
+
+    expect(result).toEqual({ success: true });
+    expect(notifyOwner).toHaveBeenCalledOnce();
+
+    // Verify notification was called with correct structure
+    const callArgs = vi.mocked(notifyOwner).mock.calls[0]?.[0];
+    expect(callArgs).toBeDefined();
+    expect(callArgs?.title).toContain("Mariam unlocked the gift");
+    expect(callArgs?.content).toContain("birthday gift was unlocked");
+    expect(callArgs?.content).toContain("special surprise");
+  });
+
+  it("includes timestamp in unlock notification", async () => {
+    const ctx = createPublicContext("192.168.1.100");
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.visitors.trackGiftUnlock();
+
+    expect(result).toEqual({ success: true });
+    expect(notifyOwner).toHaveBeenCalledOnce();
+
+    const callArgs = vi.mocked(notifyOwner).mock.calls[0]?.[0];
+    expect(callArgs?.content).toMatch(/\d{1,2}\/\d{1,2}\/\d{4}/); // Date format check
+  });
+});
+
 describe("visitors.trackTeaserVisit", () => {
   beforeEach(() => {
     vi.clearAllMocks();

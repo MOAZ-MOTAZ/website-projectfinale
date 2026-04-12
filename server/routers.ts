@@ -75,6 +75,24 @@ export const appRouter = router({
       
       return { success: true };
     }),
+    trackGiftUnlock: publicProcedure.mutation(async ({ ctx }) => {
+      // Track the gift unlock event
+      await trackVisitor({
+        eventType: "gift_unlock",
+        ipAddress: (ctx.req.ip || ctx.req.headers["x-forwarded-for"])?.toString(),
+        userAgent: ctx.req.headers["user-agent"]?.toString(),
+      });
+      
+      // Send email notification to owner
+      const timestamp = new Date().toLocaleString();
+      
+      await notifyOwner({
+        title: "🎉 Mariam unlocked the gift!",
+        content: `The birthday gift was unlocked at ${timestamp}.\n\nShe's now experiencing the special surprise you created! 🎁✨`,
+      });
+      
+      return { success: true };
+    }),
   }),
 });
 

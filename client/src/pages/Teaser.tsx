@@ -32,6 +32,7 @@ export default function Teaser() {
   });
 
   const trackVisit = trpc.visitors.trackTeaserVisit.useMutation();
+  const trackUnlock = trpc.visitors.trackGiftUnlock.useMutation();
 
   useEffect(() => {
     // Track teaser visit
@@ -51,7 +52,8 @@ export default function Teaser() {
           seconds: Math.floor((difference / 1000) % 60),
         });
       } else {
-        // When countdown reaches zero, redirect to home page
+        // When countdown reaches zero, track unlock and redirect to home page
+        trackUnlock.mutate();
         window.location.href = '/home';
       }
     };
