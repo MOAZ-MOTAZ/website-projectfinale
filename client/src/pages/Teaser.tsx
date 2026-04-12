@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
+
 import "../styles/teaser.css";
 
 export default function Teaser() {
@@ -9,6 +10,25 @@ export default function Teaser() {
     hours: 0,
     minutes: 0,
     seconds: 0,
+  });
+  // Generate random unlock time between 11 PM Apr 28 and 1:30 AM Apr 29, 2026
+  const [targetDate] = useState(() => {
+    const unlockDate = new Date('2026-04-29T00:00:00Z');
+    // Random time between 11 PM (23:00) and 1:30 AM (01:30) next day
+    // Avoid exactly 12 AM (00:00) and 11:59 PM (23:59)
+    const minHour = 23; // 11 PM
+    const maxHour = 1; // 1 AM next day
+    
+    let randomHour = Math.random() < 0.5 ? 
+      minHour + Math.random() * 1 : // 11 PM - 12 AM
+      maxHour + Math.random() * 0.5; // 12 AM - 1:30 AM
+    
+    // Avoid exactly 12 AM and 11:59 PM
+    if (randomHour >= 23.98) randomHour = 23.5;
+    if (randomHour >= 24) randomHour = 0.5;
+    
+    const targetTime = new Date('2026-04-28T23:00:00Z').getTime() + (randomHour * 60 * 60 * 1000);
+    return targetTime;
   });
 
   const trackVisit = trpc.visitors.trackTeaserVisit.useMutation();
@@ -20,8 +40,6 @@ export default function Teaser() {
 
   useEffect(() => {
     const calculateCountdown = () => {
-      // Calculate time until April 29, 2026 at 11:59 PM (or use the actual unlock time)
-      const targetDate = new Date('2026-04-29T23:59:59').getTime();
       const now = new Date().getTime();
       const difference = targetDate - now;
 
@@ -32,6 +50,9 @@ export default function Teaser() {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         });
+      } else {
+        // When countdown reaches zero, redirect to home page
+        window.location.href = '/home';
       }
     };
 
@@ -39,7 +60,7 @@ export default function Teaser() {
     const timer = setInterval(calculateCountdown, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [targetDate]);
 
   return (
     <div className="teaser-container">

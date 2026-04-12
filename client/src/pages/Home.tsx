@@ -92,6 +92,12 @@ export default function Home() {
   const [commentText, setCommentText] = useState("");
   const [commentName, setCommentName] = useState("");
 
+  // Trigger confetti animation on page load (when coming from teaser unlock)
+  useEffect(() => {
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
+  }, []);
+
   // Fetch comments
   const { data: comments = [], isLoading: commentsLoading } = trpc.comments.list.useQuery();
   const addCommentMutation = trpc.comments.add.useMutation({
