@@ -5,6 +5,7 @@ import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import { addComment, listComments, deleteComment, trackVisitor } from "./db";
 import { TRPCError } from "@trpc/server";
+import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -62,6 +63,16 @@ export const appRouter = router({
         ipAddress: (ctx.req.ip || ctx.req.headers["x-forwarded-for"])?.toString(),
         userAgent: ctx.req.headers["user-agent"]?.toString(),
       });
+      
+      // Send email notification to owner
+      const ipAddress = (ctx.req.ip || ctx.req.headers["x-forwarded-for"])?.toString() || "Unknown";
+      const timestamp = new Date().toLocaleString();
+      
+      await notifyOwner({
+        title: "🎁 Mariam visited the teaser page!",
+        content: `Someone visited the birthday gift teaser page at ${timestamp}.\n\nIP Address: ${ipAddress}\n\nShe's waiting for the big reveal! 🎉`,
+      });
+      
       return { success: true };
     }),
   }),
