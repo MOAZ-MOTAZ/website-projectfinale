@@ -213,13 +213,22 @@ export default function Home() {
                 Dear Mariam,
               </p>
               <p className="letter-text">
-                I want you to know how much you mean to me. You bring joy, laughter, and light into my life. Your kindness, strength, and beautiful spirit inspire me every single day.
+                I don't think everything I want to say can truly fit into words, but I'll try.
               </p>
               <p className="letter-text">
-                Thank you for being the amazing person you are. I'm so grateful for all the memories we've shared and excited for all the adventures still to come.
+                Since we started talking about seven months ago, you've become someone really important to me. You bring a kind of joy and light into my life that I didn't expect, and I genuinely enjoy every moment we spend talking.
               </p>
               <p className="letter-text">
-                Wishing you a day as wonderful as you are. You deserve all the happiness in the world.
+                I admire how strong you are, especially when life isn't easy. You have a way of handling things that's honestly inspiring.
+              </p>
+              <p className="letter-text">
+                I'm really grateful for the memories we've made so far, even the small ones, and I'm looking forward to many more.
+              </p>
+              <p className="letter-text">
+                I know a website isn't enough to show how much I appreciate you, but I wanted to make something a little different for you.
+              </p>
+              <p className="letter-text">
+                Happy 18th birthday. I hope your day is as wonderful as you are — and that nothing (not even sanawya amma) gets in the way of you enjoying it.
               </p>
             </div>
             <Button
