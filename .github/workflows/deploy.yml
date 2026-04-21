@@ -49,6 +49,9 @@ jobs:
       - name: Build project
         run: pnpm run build
         working-directory: ./client
+        
+      - name: Find dist folder
+        run: find . -name "dist" -type d | head -20
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
