@@ -50,6 +50,9 @@ jobs:
         run: npx vite build --config ../vite.config.ts --outDir ../dist
         working-directory: ./client
 
+      - name: Create 404.html for SPA routing
+        run: cp ./dist/index.html ./dist/404.html
+
       - name: List files after build
         run: ls -la && ls -la dist || echo "No dist in root"
 
