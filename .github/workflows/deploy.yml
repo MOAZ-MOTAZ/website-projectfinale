@@ -47,10 +47,11 @@ jobs:
         working-directory: ./client
 
       - name: Build project
-        run: pnpm --filter ./client run build
+        run: npx vite build --config ../vite.config.ts --outDir ../dist
+        working-directory: ./client
 
-      - name: Find dist folder
-        run: find . -maxdepth 3 -name "dist" -type d -not -path "*/node_modules/*"
+      - name: List files after build
+        run: ls -la && ls -la dist || echo "No dist in root"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
