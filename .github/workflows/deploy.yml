@@ -26,8 +26,24 @@ jobs:
         with:
           version: 8
 
+      - name: Remove patchedDependencies from all package.json files
+        run: |
+          node -e "
+            const fs = require('fs');
+            ['./package.json', './client/package.json'].forEach(p => {
+              if (fs.existsSync(p)) {
+                const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));
+                if (pkg.pnpm && pkg.pnpm.patchedDependencies) {
+                  delete pkg.pnpm.patchedDependencies;
+                }
+                fs.writeFileSync(p, JSON.stringify(pkg, null, 2));
+                console.log('Cleaned:', p);
+              }
+            });
+          "
+
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile --config.ignore-patch-failure=true
+        run: pnpm install --no-frozen-lockfile
         working-directory: ./client
 
       - name: Build project
