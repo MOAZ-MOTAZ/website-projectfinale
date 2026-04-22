@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { trpc } from "@/lib/trpc";
 
 import "../styles/teaser.css";
 
@@ -31,13 +30,7 @@ export default function Teaser() {
     return targetTime;
   });
 
-  const trackVisit = trpc.visitors.trackTeaserVisit.useMutation();
-  const trackUnlock = trpc.visitors.trackGiftUnlock.useMutation();
 
-  useEffect(() => {
-    // Track teaser visit
-    trackVisit.mutate();
-  }, []);
 
   useEffect(() => {
     const calculateCountdown = () => {
@@ -52,8 +45,7 @@ export default function Teaser() {
           seconds: Math.floor((difference / 1000) % 60),
         });
       } else {
-        // When countdown reaches zero, track unlock and redirect to home page
-        trackUnlock.mutate();
+        // When countdown reaches zero, redirect to home page
         window.location.href = '/home';
       }
     };
