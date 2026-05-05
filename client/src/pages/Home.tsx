@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { LetterParticles } from "@/components/LetterParticles";
 import "../styles/home-v2.css";
 
 // Sample photo data - replace with actual photos
@@ -86,6 +87,7 @@ function Confetti() {
 export default function Home() {
   const [currentSection, setCurrentSection] = useState<"welcome" | "surprise" | "letter">("welcome");
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showLetterParticles, setShowLetterParticles] = useState(false);
   const [unlockedMessages, setUnlockedMessages] = useState<number[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
@@ -121,7 +123,9 @@ export default function Home() {
   const handleFinalMessage = () => {
     setCurrentSection("letter");
     setShowConfetti(true);
+    setShowLetterParticles(true);
     setTimeout(() => setShowConfetti(false), 3000);
+    setTimeout(() => setShowLetterParticles(false), 3500);
   };
 
 
@@ -129,6 +133,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {showConfetti && <Confetti />}
+      {showLetterParticles && <LetterParticles isActive={showLetterParticles} />}
 
       {/* Welcome Section */}
       {currentSection === "welcome" && (
